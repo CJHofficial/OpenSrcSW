@@ -1,4 +1,3 @@
-import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -11,10 +10,13 @@ import java.io.FileOutputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.lang.String;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 
-public class mkXml      {
-    public void htmltoXml()throws ParserConfigurationException{
-        main mkp = new main();
+public class makeCollection {
+    public void htmltoXml(String htmlfileloc)throws ParserConfigurationException{
         try{
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -22,10 +24,10 @@ public class mkXml      {
             Element docs = document.createElement("docs");
             document.appendChild(docs);
             int htmlnum = 5;
-            File loc = new File("./2주차 실습 html");
+            File loc = new File(htmlfileloc);
             File htmls[] = loc.listFiles();
             for(int i = 0; i <htmlnum; i++){
-                String [] gettag = mkp.htmltag(htmls[i]);
+                String [] gettag = htmltag(htmls[i]);
                 Element doc = document.createElement("doc");
                 docs.appendChild(doc);
                 String num = Integer.toString(i);
@@ -46,5 +48,19 @@ public class mkXml      {
         }catch(Exception e){
             System.out.println(e);
         }
+    }
+
+    public String[] htmltag(File fileName) throws IOException{
+        String [] strtag = new String[2];
+        try{
+            org.jsoup.nodes.Document doc = Jsoup.parse(fileName, "UTF-8");
+            Elements title = doc.select("title");
+            strtag[0] = title.text();
+            Elements p = doc.select("p");
+            strtag[1] = p.text();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return strtag;
     }
 }

@@ -60,7 +60,7 @@ public class makeKeyword{
             DocumentBuilderFactory docFactory2 = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder2 = docFactory2.newDocumentBuilder();
             org.w3c.dom.Document document2 = docBuilder2.newDocument();
-            Element docs2 = document.createElement("docs");
+            Element docs2 = document2.createElement("docs");
             document2.appendChild(docs2);
             for(int i = 0 ; i < Tagsbykkma.length; i++){
                 String kkmatitle = Tagsbykkma[i][0];
@@ -95,10 +95,11 @@ public class makeKeyword{
         KeywordList kl = ke.extractKeyword(text, true);
         String keywordBody = "";
         for(int i = 0; i < kl.size(); i++){
+            Keyword kwd = kl.get(i);
             if (i != kl.size() - 1){
-                keywordBody = keywordBody + kl.get(i).getString() + ":" + kl.get(i).getCnt() + "#";
+                keywordBody = keywordBody + kwd.getString() + ":" + kwd.getCnt() + "#";
             }else{
-                keywordBody = keywordBody + kl.get(i).getString() +":" + kl.get(i).getCnt();
+                keywordBody = keywordBody + kwd.getString() +":" + kwd.getCnt();
             }
         }
         return keywordBody;
