@@ -25,8 +25,8 @@ public class makeKeyword{
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document document = docBuilder.parse(Xmlfileloc);
-            Element docs = document.getDocumentElement();
-            NodeList children = docs.getChildNodes();
+            Element doc = document.getDocumentElement();
+            NodeList children = doc.getChildNodes();
             int docId = 0;
             for(int i = 0; i<children.getLength();i++){
                 Node node = children.item(i);
@@ -60,21 +60,21 @@ public class makeKeyword{
             DocumentBuilderFactory docFactory2 = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder2 = docFactory2.newDocumentBuilder();
             org.w3c.dom.Document document2 = docBuilder2.newDocument();
-            Element docs2 = document2.createElement("docs");
-            document2.appendChild(docs2);
+            Element docs = document2.createElement("docs");
+            document2.appendChild(docs);
             for(int i = 0 ; i < Tagsbykkma.length; i++){
                 String kkmatitle = Tagsbykkma[i][0];
                 String kkmabody = Tagsbykkma[i][1];
                 String idnum = Integer.toString(i);
 
-                Element doc = document2.createElement("doc");
+                Element doc2 = document2.createElement("doc");
                 Element title = document2.createElement("title");
                 Element body = document2.createElement("body");
-                docs2.appendChild(doc);
-                docs2.setAttribute("id", idnum);
-                docs2.appendChild(title);
+                docs.appendChild(doc2);
+                doc2.setAttribute("id", idnum);
+                doc2.appendChild(title);
                 title.appendChild(document2.createTextNode(kkmatitle));
-                doc.appendChild(body);
+                doc2.appendChild(body);
                 body.appendChild(document2.createTextNode(kkmabody));
             }
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
