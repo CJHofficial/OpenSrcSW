@@ -14,6 +14,10 @@ public class kuir {
             makeCollection createXml = new makeCollection();
             createXml.htmltoXml(args[1]);
         }
+        else if(args[0].equals("-i")){
+            indexer idx = new indexer();
+            idx.indexer(args[1]);
+        }
 
     }
 }
