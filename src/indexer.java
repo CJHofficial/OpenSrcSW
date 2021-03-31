@@ -9,15 +9,11 @@ import java.util.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 public class indexer {
     ArrayList <ArrayList<String>> cutKwdList = new ArrayList();
+    ArrayList <ArrayList<String>> cutOnlyKwd = new ArrayList();
     ArrayList <ArrayList<String>> KWDnIDFlist = new ArrayList();
 
 
@@ -54,12 +50,16 @@ public class indexer {
             }
             for(int i=0; i<5; i++){
                 ArrayList cutSin1doc = new ArrayList<String>();
+                ArrayList cutKwdin1doc = new ArrayList<String>();
                 for(int j = 0 ; j < cutH[i].length ; j++){
                     cutS=cutH[i][j].split(":");
                     cutSin1doc.add(cutS[0]);
                     cutSin1doc.add(cutS[1]);
+                    cutKwdin1doc.add(cutS[0]);
+
                 }
                 cutKwdList.add(cutSin1doc);
+                cutOnlyKwd.add(cutKwdin1doc);
             }
             //System.out.println(cutKwdList.size());
             //System.out.println(cutKwdList.get(1));
@@ -104,22 +104,22 @@ public class indexer {
         ArrayList valuelist = new ArrayList<String>();
         int dfx = 0;
         for(int a =0 ; a<5; a++){
-            if((cutKwdList.get(a)).contains(kwd)){
+            if((cutOnlyKwd.get(a)).contains(kwd)){
                     dfx++;
             }
         }
         for(int i=0; i<5; i++){
             ArrayList KWDIDFin1doc = new ArrayList<String>(); //쓰고 버릴거
-            if((cutKwdList.get(i)).contains(kwd)){
+            if((cutOnlyKwd.get(i)).contains(kwd)){
                 if(!valuelist.contains(kwd)){
                     KWDIDFin1doc.add(kwd);
                 }
                 KWDIDFin1doc.add(Integer.toString(i));
-                double idf = Double.parseDouble(kwdnum) * Math.log(5/dfx);
+                double idf = Double.parseDouble(kwdnum) * Math.log((double)5/dfx);
                 String idf02 = Double.toString(Math.round(idf*100)/100.0);
-                if(idf!=0) {
+                //if(idf!=0) {
                     KWDIDFin1doc.add(idf02);//그문서에서의 가중치
-                }
+                //}
                 valuelist.addAll(KWDIDFin1doc);
             }
         }
