@@ -5,7 +5,7 @@ import java.lang.String;
 
 
 public class kuir {
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException{
+    public static void main(String[] args) throws Exception{
         if(args[0].equals("-k")){
             makeKeyword mkw = new makeKeyword();
             mkw.makeIndexXml(args[1]);
@@ -18,6 +18,10 @@ public class kuir {
             indexer idx = new indexer();
             idx.indexer(args[1]);
         }
-
+        else if(args[0].equals("-s")){
+            //String query = args[3];
+            searcher search = new searcher();
+            search.getsearch(args);
+        }
     }
 }
