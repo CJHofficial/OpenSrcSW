@@ -53,6 +53,9 @@ public class searcher {
             String[] title={"떡", "라면", "아이스크림", "초밥", "파스타"};
             sum = InnerProduct(hashMap, Q);
             sort = InnerProduct(hashMap, Q);
+            for(int i=0;i<5; i++){
+                System.out.println(sum[i]);
+            }
             Arrays.sort(sort);
             String[] top = new String[3];
             int a = 0;
@@ -71,11 +74,19 @@ public class searcher {
                 System.out.println(top[i]);
             }
         }
-    public double[] InnerProduct(HashMap hashMap, HashMap Q){
+    public double[] InnerProduct(HashMap hashMap, HashMap<String, Integer> Q){
         Iterator<String> it = hashMap.keySet().iterator();
+        Iterator<String> it2 = Q.keySet().iterator();
         ArrayList <String> idf = new ArrayList<>();
         double[] sim = new double[5];
+        double[] simsize = new double[5];
+        double Qsize = 0;
         int[] Qvalue = new int[5];
+        while(it2.hasNext()){
+            String Qkey = it2.next();
+            Qsize += Math.pow(Q.get(Qkey),2);
+            //System.out.println(Qkey);
+        }
         double[] postidf = new double[5];
         double[] sum = new double[5];
         String[] title={"떡", "라면", "아이스크림", "초밥", "파스타"};
@@ -90,13 +101,14 @@ public class searcher {
                         index = Integer.parseInt((String)idf.get(j));
                         postidf[index] = Double.parseDouble((String)idf.get(j+1));
                         Qvalue[index] = (int)Q.get(postkey);
+                        simsize[index] += Math.pow(postidf[index],2);
                     }
                 }
                 for(int i=0;i<5; i++){
                     sim[i] = postidf[i] * (double)Qvalue[i];
                     //System.out.println(postkey + "의 Q*id"+ i + "=" + sim[i]);
 
-                    sum[index] += sim[i];
+                    sum[i] += sim[i];
                     //System.out.println(sum[j]);
 
                 }
@@ -104,8 +116,9 @@ public class searcher {
             }
         }
         for(int i=0;i<5; i++){
+            sum[i] = sum[i]/(Math.sqrt(Qsize)*Math.sqrt(simsize[i]));
             sum[i]=Math.round(sum[i]*100)/100.0;
-            System.out.println(sum[i]);
+            //System.out.println(sum[i]);
             sort[i] = sum[i];
         }
         return sort;
