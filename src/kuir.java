@@ -5,7 +5,11 @@ import java.lang.String;
 
 
 public class kuir {
-    public static void main(String[] args) throws Exception {
+<<<<<<< HEAD
+        public static void main(String[] args) throws Exception {
+=======
+        public static void main(String[] args) throws Exception {
+>>>>>>> feature
         if(args[0].equals("-k")){
             makeKeyword mkw = new makeKeyword();
             mkw.makeIndexXml(args[1]);
@@ -23,6 +27,10 @@ public class kuir {
             searcher search = new searcher();
             search.getsearch(args);
         }
-
+<<<<<<< HEAD
+    }
+}
+=======
+>>>>>>> feature
     }
 }

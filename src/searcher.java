@@ -14,80 +14,79 @@ import java.io.*;
 import java.util.*;
 
 public class searcher {
-        public void getsearch(String[] args)throws Exception{
-            HashMap indexpost = getpost(args[1]);
-            HashMap <String, Integer> Q = new HashMap<>();
-            String keywordBody = "";
-            if(args[2].equals("-q")){
-                KeywordExtractor ke = new KeywordExtractor();
-                KeywordList kl = ke.extractKeyword(args[3], true);
+<<<<<<< HEAD
+            public void getsearch(String[] args)throws Exception{
+                HashMap indexpost = getpost(args[1]);
+                HashMap <String, Integer> Q = new HashMap<>();
+                String keywordBody = "";
+                if(args[2].equals("-q")){
+                    KeywordExtractor ke = new KeywordExtractor();
+                    KeywordList kl = ke.extractKeyword(args[3], true);
 
-                for(int i = 0; i < kl.size(); i++) {
-                    Keyword kwd = kl.get(i);
-                    keywordBody = kwd.getString();
-                    Q.put(keywordBody, 1);
+                    for(int i = 0; i < kl.size(); i++) {
+                        Keyword kwd = kl.get(i);
+                        keywordBody = kwd.getString();
+                        Q.put(keywordBody, 1);
 
+                    }
+                    CalcSim(indexpost, Q);
                 }
-                CalcSim(indexpost, Q);
+
             }
 
-        }
+            public HashMap getpost(String route) throws Exception{
+                FileInputStream fileStream = new FileInputStream(route);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
 
-        public HashMap getpost(String route) throws Exception{
-            FileInputStream fileStream = new FileInputStream(route);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
+                Object object = objectInputStream.readObject();
+                objectInputStream.close();
 
-            Object object = objectInputStream.readObject();
-            objectInputStream.close();
+                HashMap hashMap = (HashMap)object;
 
-            HashMap hashMap = (HashMap)object;
+                return hashMap;
+                //Iterator<String> it = hashMap.keySet().iterator();1
+=======
+            public void getsearch(String[] args)throws Exception{
+                HashMap indexpost = getpost(args[1]);
+                HashMap <String, Integer> Q = new HashMap<>();
+                String keywordBody = "";
+                if(args[2].equals("-q")){
+                    KeywordExtractor ke = new KeywordExtractor();
+                    KeywordList kl = ke.extractKeyword(args[3], true);
 
-            return hashMap;
-            //Iterator<String> it = hashMap.keySet().iterator();1
+                    for(int i = 0; i < kl.size(); i++) {
+                        Keyword kwd = kl.get(i);
+                        keywordBody = kwd.getString();
+                        Q.put(keywordBody, 1);
+
+                    }
+                    CalcSim(indexpost, Q);
+                }
+
+            }
+
+            public HashMap getpost(String route) throws Exception{
+                FileInputStream fileStream = new FileInputStream(route);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
+
+                Object object = objectInputStream.readObject();
+                objectInputStream.close();
+
+                HashMap hashMap = (HashMap)object;
+
+                return hashMap;
+                //Iterator<String> it = hashMap.keySet().iterator();1
+>>>>>>> feature
         /*while(it.hasNext()){
             String key = it.next();
             System.out.println(key + " → " + hashMap.get(key));
         }*/
+<<<<<<< HEAD
         }
 
         public void CalcSim(HashMap hashMap, HashMap<String,Integer> Q){
-            Iterator<String> it = hashMap.keySet().iterator();
-            Iterator<String> it2 = Q.keySet().iterator();
-            ArrayList <String> idf = new ArrayList<>();
-            double[] sim = new double[5];
-            double[] simsize = new double[5];
-            double Qsize = 0;
-            while(it2.hasNext()){
-                String Qkey = it2.next();
-                Qsize += Math.pow(Q.get(Qkey),2);
-                //System.out.println(Qkey);
-            }
-            int[] Qvalue = new int[5];
-            double[] postidf = new double[5];
             double[] sum = new double[5];
-            String[] title={"떡", "라면", "아이스크림", "초밥", "파스타"};
-            double [] sort = new double[5];
-            while(it.hasNext()){
-                String postkey =it.next();
-                int index=-1;
-                if(Q.containsKey(postkey)){
-                    idf = (ArrayList)(hashMap.get(postkey));
-                    for(int j=0; j<idf.size(); j++){
-                        if((j%2) == 0){
-                            index = Integer.parseInt((String)idf.get(j));
-                            postidf[index] = Double.parseDouble((String)idf.get(j+1));
-                            Qvalue[index] = Q.get(postkey);
-                            simsize[index] += Math.pow(postidf[index],2);
-                        }
-                    }
-                    for(int i=0;i<5; i++){
-                        sim[i] = postidf[i] * (double)Qvalue[i];
-                        //System.out.println(postkey + "의 Q*id"+ i + "=" + sim[i])
-                        sum[i] += sim[i];
-                        //System.out.println(sum[j]);
-                    }
-                }
-            }
+            sum = InnerProduct(hashMap, Q);
 
             for(int i=0;i<5; i++){
                 sum[i] = sum[i]/(Math.sqrt(Qsize)*Math.sqrt(simsize[i]));
@@ -115,3 +114,41 @@ public class searcher {
         }
 }
 
+=======
+        }
+
+    public double[] InnerProduct(HashMap hashMap, HashMap Q){
+        Iterator<String> it = hashMap.keySet().iterator();
+        ArrayList <String> idf = new ArrayList<>();
+        double[] sim = new double[5];
+        int[] Qvalue = new int[5];
+        double[] postidf = new double[5];
+        double[] sum = new double[5];
+        String[] title={"떡", "라면", "아이스크림", "초밥", "파스타"};
+        double [] sort = new double[5];
+        while(it.hasNext()){
+            String postkey =it.next();
+            int index=-1;
+            if(Q.containsKey(postkey)){
+                idf = (ArrayList)(hashMap.get(postkey));
+                for(int j=0; j<idf.size(); j++){
+                    if((j%2) == 0){
+                        index = Integer.parseInt((String)idf.get(j));
+                        postidf[index] = Double.parseDouble((String)idf.get(j+1));
+                        Qvalue[index] = (int)Q.get(postkey);
+                    }
+                }
+                for(int i=0;i<5; i++){
+                    sim[i] = postidf[i] * (double)Qvalue[i];
+                    //System.out.println(postkey + "의 Q*id"+ i + "=" + sim[i]);
+
+                        sum[index] += sim[i];
+                        //System.out.println(sum[j]);
+
+                }
+
+            }
+        }
+        return sum;
+}
+>>>>>>> feature
