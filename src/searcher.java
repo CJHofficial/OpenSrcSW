@@ -28,7 +28,6 @@ public class searcher {
                 Q.put(keywordBody, 1);
 
             }
-            CalcSim(indexpost, Q);
         }
 
     }
@@ -50,7 +49,7 @@ public class searcher {
         }*/
     }
 
-    public void CalcSim(HashMap hashMap, HashMap Q){
+    public double[] InnerProduct(HashMap hashMap, HashMap Q){
         Iterator<String> it = hashMap.keySet().iterator();
         ArrayList <String> idf = new ArrayList<>();
         double[] sim = new double[5];
@@ -75,34 +74,13 @@ public class searcher {
                     sim[i] = postidf[i] * (double)Qvalue[i];
                     //System.out.println(postkey + "의 Q*id"+ i + "=" + sim[i]);
 
-                        sum[index] += sim[i];
-                        //System.out.println(sum[j]);
+                    sum[index] += sim[i];
+                    //System.out.println(sum[j]);
 
                 }
 
             }
         }
-        for(int i=0;i<5; i++){
-            sum[i]=Math.round(sum[i]*100)/100.0;
-            System.out.println(sum[i]);
-            sort[i] = sum[i];
-        }
-        Arrays.sort(sort);
-        String[] top = new String[3];
-        int a = 0;
-        for(int i =4;i>=0;i--){
-            for(int j=0;j<5;j++){
-                if(a==3)break;
-                if(sort[i]==sum[j]){
-                   top[a] = title[j];
-                    if(a<=2)
-                        a++;
-                }
-            }
-            if(a==3)break;
-        }
-        for(int i=0;i<3;i++){
-            System.out.println(top[i]);
-        }
+        return sum;
     }
 }
