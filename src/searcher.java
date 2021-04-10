@@ -81,6 +81,12 @@ public class searcher {
 
             }
         }
-        return sum;
+        for(int i=0;i<5; i++){
+            sum[i]=Math.round(sum[i]*100)/100.0;
+            System.out.println(sum[i]);
+            sort[i] = sum[i];
+        }
+
+        return sort;
     }
 }
