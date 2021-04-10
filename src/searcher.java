@@ -26,11 +26,9 @@ public class searcher {
                         Keyword kwd = kl.get(i);
                         keywordBody = kwd.getString();
                         Q.put(keywordBody, 1);
-
                     }
                     CalcSim(indexpost, Q);
                 }
-
             }
 
             public HashMap getpost(String route) throws Exception{
@@ -49,7 +47,6 @@ public class searcher {
             System.out.println(key + " → " + hashMap.get(key));
         }*/
         }
-
         public void CalcSim(HashMap hashMap, HashMap<String,Integer> Q){
             double[] sum = new double[5];
             double [] sort = new double[5];
@@ -74,4 +71,43 @@ public class searcher {
                 System.out.println(top[i]);
             }
         }
+    public double[] InnerProduct(HashMap hashMap, HashMap Q){
+        Iterator<String> it = hashMap.keySet().iterator();
+        ArrayList <String> idf = new ArrayList<>();
+        double[] sim = new double[5];
+        int[] Qvalue = new int[5];
+        double[] postidf = new double[5];
+        double[] sum = new double[5];
+        String[] title={"떡", "라면", "아이스크림", "초밥", "파스타"};
+        double [] sort = new double[5];
+        while(it.hasNext()){
+            String postkey =it.next();
+            int index=-1;
+            if(Q.containsKey(postkey)){
+                idf = (ArrayList)(hashMap.get(postkey));
+                for(int j=0; j<idf.size(); j++){
+                    if((j%2) == 0){
+                        index = Integer.parseInt((String)idf.get(j));
+                        postidf[index] = Double.parseDouble((String)idf.get(j+1));
+                        Qvalue[index] = (int)Q.get(postkey);
+                    }
+                }
+                for(int i=0;i<5; i++){
+                    sim[i] = postidf[i] * (double)Qvalue[i];
+                    //System.out.println(postkey + "의 Q*id"+ i + "=" + sim[i]);
+
+                    sum[index] += sim[i];
+                    //System.out.println(sum[j]);
+
+                }
+
+            }
+        }
+        for(int i=0;i<5; i++){
+            sum[i]=Math.round(sum[i]*100)/100.0;
+            System.out.println(sum[i]);
+            sort[i] = sum[i];
+        }
+        return sort;
+    }
 }
